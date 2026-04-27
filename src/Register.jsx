@@ -4,9 +4,12 @@ import "./App.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Eye, EyeSlash } from "lucide-react";
 
 function Register() {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+
 
   const [agree, setAgree] = useState(false);
 
@@ -161,16 +164,24 @@ return (
         {/* Password */}
         <div className="mb-2">
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="password"
             placeholder="••••••••"
             value={form.password}
             onChange={handleChange}
             className="w-full bg-white/45 backdrop-blur-xl border border-white/70 rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-yellow-400 placeholder:text-gray-500"
           />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
+          >
+            {showPassword ? <Eye /> : <EyeSlash />}
+          </button>
           {errors.password && (
             <p className="text-red-500 text-sm mt-2">{errors.password}</p>
           )}
+           
         </div>
 
         {/* Rules */}
