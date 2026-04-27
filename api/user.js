@@ -1,4 +1,4 @@
-// api/user.js
+// user.js
 
 import { Router } from "express";
 import User from "../models/User.js";
@@ -6,9 +6,9 @@ import User from "../models/User.js";
 const router = Router();
 
 
-// ==========================
+// ==============================
 // Create User
-// ==========================
+// ==============================
 router.post("/user-create", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -16,6 +16,14 @@ router.post("/user-create", async (req, res) => {
     if (!name || !email || !password) {
       return res.status(400).json({
         message: "All fields are required",
+      });
+    }
+
+    const alreadyUser = await User.findOne({ email });
+
+    if (alreadyUser) {
+      return res.status(409).json({
+        message: "Email already exists",
       });
     }
 
@@ -39,12 +47,14 @@ router.post("/user-create", async (req, res) => {
 });
 
 
-// ==========================
-// Fetch All Users
-// ==========================
+// ==============================
+// Get All Users
+// ==============================
 router.get("/users", async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User.find().sort({
+      createdAt: -1,
+    });
 
     return res.status(200).json(users);
 
@@ -57,9 +67,9 @@ router.get("/users", async (req, res) => {
 });
 
 
-// ==========================
-// Fetch Single User
-// ==========================
+// ==============================
+// Get Single User
+// ==============================
 router.get("/users/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -81,24 +91,23 @@ router.get("/users/:id", async (req, res) => {
 });
 
 
-// ==========================
+// ==============================
 // Update User
-// ==========================
+// ==============================
 router.put("/user-update/:id", async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    const updatedUser = await User.findByIdAndUpdate(
+    const user = await User.findByIdAndUpdate(
       req.params.id,
+      { name, email, password },
       {
-        name,
-        email,
-        password,
-      },
-      { new: true }
+        new: true,
+        runValidators: true,
+      }
     );
 
-    if (!updatedUser) {
+    if (!user) {
       return res.status(404).json({
         message: "User not found",
       });
@@ -106,7 +115,7 @@ router.put("/user-update/:id", async (req, res) => {
 
     return res.status(200).json({
       message: "User updated successfully",
-      updatedUser,
+      user,
     });
 
   } catch (error) {
@@ -118,14 +127,16 @@ router.put("/user-update/:id", async (req, res) => {
 });
 
 
-// ==========================
+// ==============================
 // Delete User
-// ==========================
+// ==============================
 router.delete("/user-delete/:id", async (req, res) => {
   try {
-    const deletedUser = await User.findByIdAndDelete(req.params.id);
+    const user = await User.findByIdAndDelete(
+      req.params.id
+    );
 
-    if (!deletedUser) {
+    if (!user) {
       return res.status(404).json({
         message: "User not found",
       });
