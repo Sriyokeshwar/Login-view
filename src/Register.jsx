@@ -2,7 +2,15 @@ import "./App.css";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { Eye, EyeOff, UserRound, ShieldCheck } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  UserRound,
+  ShieldCheck,
+  Mail,
+  LockKeyhole,    
+  BadgeCheck,
+} from "lucide-react";
 
 function Register() {
   const navigate = useNavigate();
@@ -74,13 +82,16 @@ function Register() {
         form
       );
 
-      alert("User Created Successfully!");
+      alert(res.data.message);
 
       navigate("/profile", {
-        state: { user: res.data },
+        state: { user: res.data.user },
       });
     } catch (error) {
-      alert("Failed to create user");
+      alert(
+        error.response?.data?.message ||
+          "Failed to create user"
+      );
     }
   };
 
@@ -94,108 +105,139 @@ function Register() {
   return (
     <div className="min-h-screen w-full bg-linear-to-br from-[#fff8e1] via-[#fef3c7] to-[#fde68a] flex items-center justify-center px-4 relative overflow-hidden">
 
-      {/* Background Glow */}
-      <div className="absolute w-80 h-80 bg-yellow-300/30 rounded-full blur-3xl top-0 left-0 animate-pulse"></div>
-      <div className="absolute w-72 h-72 bg-amber-400/25 rounded-full blur-3xl bottom-10 right-0 animate-pulse"></div>
-      <div className="absolute w-72 h-72 bg-white/40 rounded-full blur-3xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+      {/* Glow Effects */}
+      <div className="absolute w-96 h-96 bg-yellow-300/30 rounded-full blur-3xl top-0 left-0 animate-pulse"></div>
+      <div className="absolute w-80 h-80 bg-amber-400/20 rounded-full blur-3xl bottom-0 right-0 animate-pulse"></div>
+      <div className="absolute w-72 h-72 bg-white/30 rounded-full blur-3xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
 
       <form
         onSubmit={handleSubmit}
-        className="relative z-10 w-full max-w-md bg-white/35 backdrop-blur-3xl border border-white/50 rounded-[34px] p-10 shadow-[0_8px_40px_rgba(255,190,0,0.22)]"
+        className="relative z-10 w-full max-w-md bg-white/35 backdrop-blur-3xl border border-white/50 rounded-[36px] p-10 shadow-[0_8px_45px_rgba(255,190,0,0.22)]"
       >
         {/* Shine */}
-        <div className="absolute inset-0 rounded-[34px] bg-linear-to-br from-white/40 via-transparent to-yellow-200/20 pointer-events-none"></div>
+        <div className="absolute inset-0 rounded-[36px] bg-linear-to-br from-white/40 via-transparent to-yellow-200/20 pointer-events-none"></div>
 
         <div className="relative z-10">
 
-          {/* Top Right Admin Link */}
-          <div className="flex justify-end mb-2">
+          {/* Top Link */}
+          <div className="mb-4 flex justify-end">
             <Link
               to="/admin"
-              className="flex items-center gap-2 text-sm font-semibold text-blue-700 hover:text-blue-900 transition"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-blue-700 hover:text-blue-900 transition"
             >
               <ShieldCheck size={18} />
               Admin
             </Link>
           </div>
 
-          {/* User Icon */}
-          <div className="flex justify-center mb-4">
-            <div className="w-16 h-16 rounded-full bg-yellow-500/15 flex items-center justify-center">
-              <UserRound size={30} className="text-amber-700" />
+          {/* Icon */}
+          <div className="flex justify-center mb-5">
+            <div className="w-20 h-20 rounded-full bg-yellow-500/15 border border-white/40 flex items-center justify-center shadow-md">
+              <UserRound size={36} className="text-amber-700" />
             </div>
           </div>
 
-          <p className="text-xs font-semibold tracking-[5px] text-amber-700 uppercase text-center mb-4">
+          {/* Heading */}
+          <p className="text-xs font-semibold tracking-[5px] text-amber-700 uppercase text-center mb-3">
             Premium Account
           </p>
 
-          <h1 className="text-5xl font-bold text-gray-900 text-center mb-3">
+          <h1 className="text-5xl font-bold text-center text-gray-900 mb-3">
             Create Profile
           </h1>
 
-          <p className="text-gray-600 text-center mb-8">
+          <p className="text-center text-gray-600 mb-8">
             Elegant golden liquid glass UI
           </p>
 
           {/* Name */}
-          <div className="mb-4">
+          <div className="mb-4 relative">
+            <UserRound
+              size={18}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-700"
+            />
+
             <input
               type="text"
               id="name"
               placeholder="Full Name"
               value={form.name}
               onChange={handleChange}
-              className="w-full bg-white/45 border border-orange/70 rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-yellow-400"
+              className="w-full pl-11 pr-4 py-3 rounded-2xl bg-white/45 border border-orange-300 outline-none focus:ring-2 focus:ring-yellow-400 placeholder:text-gray-500"
             />
-            {errors.name && (
-              <p className="text-red-500 text-sm mt-2">{errors.name}</p>
-            )}
           </div>
 
+          {errors.name && (
+            <p className="text-red-500 text-sm mb-3">
+              {errors.name}
+            </p>
+          )}
+
           {/* Email */}
-          <div className="mb-4">
+          <div className="mb-4 relative">
+            <Mail
+              size={18}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-700"
+            />
+
             <input
               type="email"
               id="email"
               placeholder="name@example.com"
               value={form.email}
               onChange={handleChange}
-className="w-full bg-white/45 border border-orange-900 rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-yellow-400"            />
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-2">{errors.email}</p>
-            )}
+              className="w-full pl-11 pr-4 py-3 rounded-2xl bg-white/45 border border-orange-300 outline-none focus:ring-2 focus:ring-yellow-400 placeholder:text-gray-500"
+            />
           </div>
+
+          {errors.email && (
+            <p className="text-red-500 text-sm mb-3">
+              {errors.email}
+            </p>
+          )}
 
           {/* Password */}
-          <div className="mb-2">
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                placeholder="••••••••"
-                value={form.password}
-                onChange={handleChange}
-                className="w-full bg-white/45 border border-orange/70 rounded-2xl px-4 py-3 pr-12 outline-none focus:ring-2 focus:ring-yellow-400"
-              />
+          <div className="mb-4 relative">
+            <LockKeyhole
+              size={18}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-700"
+            />
 
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
-              >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
-            </div>
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              placeholder="Password"
+              value={form.password}
+              onChange={handleChange}
+              className="w-full pl-11 pr-12 py-3 rounded-2xl bg-white/45 border border-orange-300 outline-none focus:ring-2 focus:ring-yellow-400 placeholder:text-gray-500"
+            />
 
-            {errors.password && (
-              <p className="text-red-500 text-sm mt-2">{errors.password}</p>
-            )}
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-amber-700 transition"
+            >
+              {showPassword ? (
+                <EyeOff size={20} />
+              ) : (
+                <Eye size={20} />
+              )}
+            </button>
           </div>
 
+          {errors.password && (
+            <p className="text-red-500 text-sm mb-3">
+              {errors.password}
+            </p>
+          )}
+
           {/* Rules */}
-          <div className="text-sm text-gray-700 mb-4 leading-7 bg-white/25 rounded-2xl px-4 py-3 border border-white/40">
-            <p className="font-semibold mb-1">Password must contain:</p>
+          <div className="mb-5 rounded-2xl bg-white/25 border border-orange-200 px-4 py-4 text-sm text-gray-700 space-y-2">
+            <p className="font-semibold flex items-center gap-2">
+              <BadgeCheck size={16} className="text-amber-700" />
+              Password must contain:
+            </p>
+
             <p>• One Capital Letter</p>
             <p>• One Number</p>
             <p>• One Symbol</p>
@@ -203,14 +245,16 @@ className="w-full bg-white/45 border border-orange-900 rounded-2xl px-4 py-3 out
           </div>
 
           {/* Checkbox */}
-          <div className="flex items-center gap-2 mb-6">
+          <div className="flex items-center gap-3 mb-6">
             <input
               type="checkbox"
               checked={agree}
               onChange={() => setAgree(!agree)}
               className="accent-yellow-500 w-4 h-4"
             />
-            <label className="text-sm text-gray-700">
+
+            <label className="text-sm text-gray-700 flex items-center gap-2">
+             
               I agree to store my data
             </label>
           </div>
