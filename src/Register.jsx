@@ -96,7 +96,7 @@ function Register() {
 // Replace only return() UI in Register.jsx / Edit.jsx
 
 return (
-  <div className="min-h-screen w-full bg-gradient-to-br from-[#fff8e1] via-[#fef3c7] to-[#fde68a] flex items-center justify-center px-4 relative overflow-hidden">
+  <div className="min-h-screen w-full bg-linear-to-br from-[#fff8e1] via-[#fef3c7] to-[#fde68a] flex items-center justify-center px-4 relative overflow-hidden">
 
     {/* Liquid Gold Blur Orbs */}
     <div className="absolute w-80 h-80 bg-yellow-300/30 rounded-full blur-3xl top-0 left-0 animate-pulse"></div>
@@ -113,7 +113,7 @@ return (
       shadow-[0_8px_40px_rgba(255,190,0,0.22)]"
     >
       {/* Shine Layer */}
-      <div className="absolute inset-0 rounded-[34px] bg-gradient-to-br from-white/40 via-transparent to-yellow-200/20 pointer-events-none"></div>
+      <div className="absolute inset-0 rounded-[34px] bg-linear-to-br from-white/40 via-transparent to-yellow-200/20 pointer-events-none"></div>
 
       <div className="relative z-10">
         <p className="text-xs font-semibold tracking-[5px] text-amber-700 uppercase text-center mb-4">
@@ -202,7 +202,7 @@ return (
           className={`w-full py-3 rounded-2xl font-bold tracking-[3px] transition-all duration-300
           ${
             isValid
-              ? "bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 text-black shadow-lg hover:scale-[1.02]"
+              ? "bg-linear-to-r from-yellow-400 via-amber-300 to-yellow-500 text-black shadow-lg hover:scale-[1.02]"
               : "bg-gray-300 text-gray-500 cursor-not-allowed"
           }`}
         >

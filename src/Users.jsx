@@ -36,7 +36,7 @@ function Users() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-[#fff8e1] via-[#fef3c7] to-[#fde68a] flex items-center justify-center px-6 py-10 relative overflow-hidden">
+    <div className="min-h-screen w-full bg-linear-to-br from-[#fff8e1] via-[#fef3c7] to-[#fde68a] flex items-center justify-center px-6 py-10 relative overflow-hidden">
 
       {/* Background Liquid Blur */}
       <div className="absolute w-80 h-80 bg-yellow-300/30 rounded-full blur-3xl top-0 left-0"></div>
@@ -52,7 +52,7 @@ function Users() {
         p-10"
       >
         {/* Shine */}
-        <div className="absolute inset-0 rounded-[34px] bg-gradient-to-br from-white/40 via-transparent to-yellow-200/20 pointer-events-none"></div>
+        <div className="absolute inset-0 rounded-[34px] bg-linear-to-br from-white/40 via-transparent to-yellow-200/20 pointer-events-none"></div>
 
         <div className="relative z-10">
           <p className="text-xs font-semibold tracking-[4px] text-amber-700 uppercase text-center mb-4">
