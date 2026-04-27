@@ -48,8 +48,8 @@ function Edit() {
 
     if (!data.name) {
       newErrors.name = "Name is mandatory";
-    } else if (data.name.length < 5) {
-      newErrors.name = "Minimum 5 letters";
+    } else if (data.name.length < 3) {
+      newErrors.name = "Minimum 3 letters";
     }
 
     if (!data.email) {
