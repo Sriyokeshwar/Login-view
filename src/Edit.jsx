@@ -4,10 +4,12 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { Eye, EyeOff } from "lucide-react";
 
 function Edit() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [showPassword, setShowPassword] = useState(false);
 
   const [agree, setAgree] = useState(false);
 
@@ -181,21 +183,32 @@ function Edit() {
           </div>
 
           {/* Password */}
-          <div className="mb-2">
+        <div className="mb-2">
+          <div className="relative">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
+              name="password"
+              placeholder="••••••••"
               value={form.password}
               onChange={handleChange}
-              placeholder="Password"
-              className="w-full bg-white/45 border border-white/70 rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-yellow-400"
+              className="w-full bg-white/45 backdrop-blur-xl border border-white/70 rounded-2xl px-4 py-3 pr-12 outline-none focus:ring-2 focus:ring-yellow-400 placeholder:text-gray-500"
             />
-            {errors.password && (
-              <p className="text-red-500 text-sm mt-2">
-                {errors.password}
-              </p>
-            )}
+
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
           </div>
+          
+          {errors.password && (
+            <p className="text-red-500 text-sm mt-2">{errors.password}</p>
+          )}
+           
+        </div>
 
           {/* Rules */}
           <div className="text-sm text-gray-700 mb-4 leading-7">
