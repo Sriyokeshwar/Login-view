@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Eye, EyeOff } from "lucide-react";
+import Admin from "./Admin";
 
 function Register() {
   const navigate = useNavigate();
@@ -95,16 +96,18 @@ function Register() {
     agree;
 
   // Golden Liquid Glass Theme
-// Replace only return() UI in Register.jsx / Edit.jsx
+// Replace only return() UI in Register.jsx / Edit.j sx
 
 return (
+<div>
+  
   <div className="min-h-screen w-full bg-linear-to-br from-[#fff8e1] via-[#fef3c7] to-[#fde68a] flex items-center justify-center px-4 relative overflow-hidden">
-
+    
     {/* Liquid Gold Blur Orbs */}
     <div className="absolute w-80 h-80 bg-yellow-300/30 rounded-full blur-3xl top-0 left-0 animate-pulse"></div>
     <div className="absolute w-72 h-72 bg-amber-400/25 rounded-full blur-3xl bottom-10 right-0 animate-pulse"></div>
     <div className="absolute w-72 h-72 bg-white/40 rounded-full blur-3xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
-
+    
     <form
       onSubmit={handleSubmit}
       className="relative z-10 w-full max-w-md 
@@ -129,7 +132,7 @@ return (
         <p className="text-gray-600 text-center mb-8">
           Elegant golden liquid glass UI
         </p>
-
+        <h6> <a href="Admin.jsx">Admin</a></h6>
         {/* Name */}
         <div className="mb-4">
           <input
@@ -226,7 +229,8 @@ return (
       </div>
     </form>
   </div>
-);
+  </div>
+); 
 }
 
 export default Register;
