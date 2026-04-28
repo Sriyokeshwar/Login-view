@@ -104,7 +104,7 @@ function Users() {
                   <th className="p-4">
                     Email
                   </th>
-                  <th className="p-4 text-center">
+                  <th className="p-4 text-center ">
                     Edit
                   </th>
                   <th className="p-4 text-center">
@@ -135,15 +135,13 @@ function Users() {
                       <td className="p-4 text-center">
                         <button
                           onClick={() =>
-                            navigate(
-                              `/edit/${user._id}`
-                            )
+                            navigate(`/edit/${user._id}`)
                           }
-                          className="p-2 rounded-xl bg-blue-500/10"
+                          className="group p-2 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 hover:scale-110 transition-all duration-300 cursor-pointer"
                         >
                           <Pencil
                             size={20}
-                            className="text-blue-700"
+                            className="text-blue-700 group-hover:text-blue-900 transition-colors duration-300"
                           />
                         </button>
                       </td>
@@ -151,15 +149,13 @@ function Users() {
                       <td className="p-4 text-center">
                         <button
                           onClick={() =>
-                            deleteUser(
-                              user._id
-                            )
+                            deleteUser(user._id)
                           }
-                          className="p-2 rounded-xl bg-red-500/10"
+                          className="group p-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 hover:scale-110 transition-all duration-300 cursor-pointer"
                         >
                           <Trash2
                             size={20}
-                            className="text-red-600"
+                            className="text-red-600 group-hover:text-red-800 transition-colors duration-300"
                           />
                         </button>
                       </td>

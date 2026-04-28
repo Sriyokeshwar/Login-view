@@ -254,25 +254,17 @@ const handleSubmit = async (e) => {
             />
 
             <input
-              type={
-                showPassword
-                  ? "text"
-                  : "password"
-              }
+              type={showPassword ? "text" : "password"}
               id="password"
+              placeholder="Password"
               value={form.password}
               onChange={handleChange}
-              placeholder="Password"
-              className="w-full pl-11 pr-12 py-3 rounded-2xl bg-white/45 border border-orange-300 outline-none focus:ring-2 focus:ring-yellow-400"
+              className="w-full pl-11 pr-12 py-3 rounded-2xl bg-white/45 border border-orange-300 outline-none focus:ring-2 focus:ring-yellow-400 placeholder:text-gray-500"
             />
 
             <button
               type="button"
-              onClick={() =>
-                setShowPassword(
-                  !showPassword
-                )
-              }
+              onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-amber-700 transition"
             >
               {showPassword ? (
