@@ -66,11 +66,11 @@ router.get("/users", async (req, res) => {
       message: "Internal server error",
       error: error.message,
     });
-  }
+  }   //for admin view all users
 });
 
 /* ==============================
-   Get Single User
+   Get Single User // for personal profile and edit page
 ============================== */
 router.get("/users/:id", async (req, res) => {
   try {
