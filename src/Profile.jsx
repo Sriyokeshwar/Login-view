@@ -54,7 +54,7 @@ function Profile() {
           </p>
 
           <button
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/")}
             className="px-6 py-3 rounded-2xl bg-linear-to-r from-yellow-400 to-amber-500 font-semibold hover:scale-105 transition"
           >
             Go Login
