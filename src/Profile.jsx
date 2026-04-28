@@ -1,10 +1,11 @@
-// Profile.jsx
-
 import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react"; 
 import axios from "axios";
 import {
   UserRound,
   Mail,
+  Eye,
+  EyeOff,
   LockKeyhole,
   ArrowLeft,
   Pencil,
@@ -14,16 +15,14 @@ import {
 } from "lucide-react";
 
 function Profile() {
+  const [showPassword, setShowPassword] = useState(false);  
   const { state } = useLocation();
   const navigate = useNavigate();
 
   const user = state?.user;
 
   const deleteUser = async () => {
-    const ok = window.confirm(
-      "Delete your account?"
-    );
-
+    const ok = window.confirm("Delete your account?");
     if (!ok) return;
 
     try {
@@ -32,35 +31,33 @@ function Profile() {
       );
 
       alert("Deleted Successfully");
-      navigate("/");
+      navigate("/"); // ✅ fixed
     } catch (error) {
       alert("Failed to delete account");
     }
   };
 
+  // ❗ No user case
   if (!user) {
     return (
       <div className="min-h-screen bg-linear-to-br from-[#fff8e1] via-[#fef3c7] to-[#fde68a] flex items-center justify-center px-4">
         <div className="bg-white/40 backdrop-blur-2xl rounded-[34px] p-10 shadow-xl text-center max-w-md w-full border border-white/50">
 
-          <ShieldCheck
-            size={45}
-            className="mx-auto text-red-500 mb-4"
-          />
+          <ShieldCheck size={45} className="mx-auto text-red-500 mb-4" />
 
           <h1 className="text-3xl font-bold mb-3 text-gray-900">
             No User Data
           </h1>
 
           <p className="text-gray-600 mb-6">
-            Please register first
+            Please login first
           </p>
 
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/login")}
             className="px-6 py-3 rounded-2xl bg-linear-to-r from-yellow-400 to-amber-500 font-semibold hover:scale-105 transition"
           >
-            Go Register
+            Go Login
           </button>
         </div>
       </div>
@@ -85,7 +82,7 @@ function Profile() {
           {/* Top */}
           <div className="flex justify-between items-center mb-5">
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/")} // ✅ fixed
               className="flex items-center gap-2 text-amber-700 font-semibold hover:text-amber-900 transition"
             >
               <ArrowLeft size={18} />
@@ -94,25 +91,17 @@ function Profile() {
 
             <div className="flex gap-2">
               <button
-                onClick={() =>
-                  navigate(`/edit/${user._id}`)
-                }
+                onClick={() => navigate(`/edit/${user._id}`)}
                 className="p-2 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 transition"
               >
-                <Pencil
-                  size={18}
-                  className="text-blue-700"
-                />
+                <Pencil size={18} className="text-blue-700" />
               </button>
 
               <button
                 onClick={deleteUser}
                 className="p-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 transition"
               >
-                <Trash2
-                  size={18}
-                  className="text-red-600"
-                />
+                <Trash2 size={18} className="text-red-600" />
               </button>
             </div>
           </div>
@@ -120,10 +109,7 @@ function Profile() {
           {/* Icon */}
           <div className="flex justify-center mb-4">
             <div className="w-20 h-20 rounded-full bg-yellow-500/15 border border-white/40 flex items-center justify-center shadow-md">
-              <UserRound
-                size={40}
-                className="text-amber-700"
-              />
+              <UserRound size={40} className="text-amber-700" />
             </div>
           </div>
 
@@ -141,63 +127,51 @@ function Profile() {
 
           {/* Name */}
           <div className="mb-4 bg-white/40 rounded-2xl px-4 py-4 flex gap-3 border border-white/40">
-            <UserRound
-              size={20}
-              className="text-amber-700"
-            />
-
+            <UserRound size={20} className="text-amber-700" />
             <div>
-              <p className="text-xs text-gray-500">
-                Full Name
-              </p>
-              <p className="font-semibold text-gray-900">
-                {user.name}
-              </p>
+              <p className="text-xs text-gray-500">Full Name</p>
+              <p className="font-semibold text-gray-900">{user.name}</p>
             </div>
           </div>
 
           {/* Email */}
           <div className="mb-4 bg-white/40 rounded-2xl px-4 py-4 flex gap-3 border border-white/40">
-            <Mail
-              size={20}
-              className="text-amber-700"
-            />
-
+            <Mail size={20} className="text-amber-700" />
             <div>
-              <p className="text-xs text-gray-500">
-                Email Address
-              </p>
-              <p className="font-semibold text-gray-900">
-                {user.email}
-              </p>
+              <p className="text-xs text-gray-500">Email Address</p>
+              <p className="font-semibold text-gray-900">{user.email}</p>
             </div>
           </div>
 
           {/* Password */}
-          <div className="mb-5 bg-white/40 rounded-2xl px-4 py-4 flex gap-3 border border-white/40">
-            <LockKeyhole
-              size={20}
-              className="text-amber-700"
-            />
+          <div className="mb-5 bg-white/40 rounded-2xl px-4 py-4 flex items-center gap-3 border border-white/40">
 
-            <div>
-              <p className="text-xs text-gray-500">
-                Password
-              </p>
+            {/* Left Icon */}
+            <LockKeyhole size={20} className="text-amber-700" />
+
+            {/* Content */}
+            <div className="flex-1">
+              <p className="text-xs text-gray-500">Password</p>
               <p className="font-semibold text-gray-900">
-                {"•".repeat(
-                  user.password?.length || 8
-                )}
+                {showPassword
+                  ? user.password
+                  : "•".repeat(user.password?.length || 8)}
               </p>
             </div>
-          </div>
 
+            {/* Eye Button (aligned right) */}
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="text-gray-500 hover:text-amber-700 transition"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+
+          </div>
           {/* Info Box */}
           <div className="mb-6 rounded-2xl bg-white/25 border border-white/40 px-4 py-3 text-sm text-gray-700 flex gap-2">
-            <Sparkles
-              size={16}
-              className="mt-0.5 text-amber-700"
-            />
+            <Sparkles size={16} className="mt-0.5 text-amber-700" />
             <span>
               Manage your profile securely and elegantly.
             </span>
@@ -205,7 +179,7 @@ function Profile() {
 
           {/* Home */}
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/")} // ✅ fixed
             className="w-full py-3 rounded-2xl font-bold tracking-[3px] bg-linear-to-r from-yellow-400 to-amber-500 hover:scale-[1.02] transition"
           >
             HOME

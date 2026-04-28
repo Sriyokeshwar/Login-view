@@ -8,32 +8,25 @@ import {
   UserRound,
   ShieldCheck,
   Mail,
-  LockKeyhole,    
-  BadgeCheck,
+  LockKeyhole,
 } from "lucide-react";
 
-function Register() {
+function Login() {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   const [agree, setAgree] = useState(false);
 
   const [form, setForm] = useState({
-    name: "",
     email: "",
     password: "",
   });
 
   const [errors, setErrors] = useState({});
 
-  const validate = (data) => {
+  // ✅ FIXED VALIDATION
+  const validate = (data, agreeState = agree) => {
     let newErrors = {};
-
-    if (!data.name) {
-      newErrors.name = "Name is mandatory";
-    } else if (data.name.length < 3) {
-      newErrors.name = "Minimum 3 characters";
-    }
 
     if (!data.email) {
       newErrors.email = "Email is mandatory";
@@ -41,16 +34,10 @@ function Register() {
 
     if (!data.password) {
       newErrors.password = "Password is mandatory";
-    } else {
-      if (!/[A-Z]/.test(data.password)) {
-        newErrors.password = "Need one Capital letter";
-      } else if (!/[0-9]/.test(data.password)) {
-        newErrors.password = "Need one Number";
-      } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(data.password)) {
-        newErrors.password = "Need one Symbol";
-      } else if (data.password.length < 8) {
-        newErrors.password = "Minimum 8 characters";
-      }
+    }
+
+    if (!agreeState) {
+      newErrors.agree = "You must agree to continue";
     }
 
     return newErrors;
@@ -65,20 +52,20 @@ function Register() {
     };
 
     setForm(updatedForm);
-    setErrors(validate(updatedForm));
+    setErrors(validate(updatedForm, agree)); // ✅ fixed
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const validationErrors = validate(form);
+    const validationErrors = validate(form, agree); // ✅ fixed
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length > 0) return;
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/user-create",
+        "http://localhost:5000/api/login",
         form
       );
 
@@ -87,17 +74,17 @@ function Register() {
       navigate("/profile", {
         state: { user: res.data.user },
       });
+
     } catch (error) {
       alert(
         error.response?.data?.message ||
-          "Failed to create user"
+        "Login failed"
       );
     }
   };
 
   const isValid =
     Object.keys(errors).length === 0 &&
-    form.name &&
     form.email &&
     form.password &&
     agree;
@@ -114,20 +101,22 @@ function Register() {
         onSubmit={handleSubmit}
         className="relative z-10 w-full max-w-md bg-white/35 backdrop-blur-3xl border border-white/50 rounded-[36px] p-10 shadow-[0_8px_45px_rgba(255,190,0,0.22)]"
       >
+
         {/* Shine */}
         <div className="absolute inset-0 rounded-[36px] bg-linear-to-br from-white/40 via-transparent to-yellow-200/20 pointer-events-none"></div>
 
         <div className="relative z-10">
 
-          {/* Top Link */}
+          {/* Admin Button */}
           <div className="mb-4 flex justify-end">
-            <Link
-              to="/admin"
+            <button
+              type="button"
+              onClick={() => navigate("/admin")}
               className="inline-flex items-center gap-2 text-sm font-semibold text-blue-700 hover:text-blue-900 transition"
             >
               <ShieldCheck size={18} />
               Admin
-            </Link>
+            </button>
           </div>
 
           {/* Icon */}
@@ -139,39 +128,16 @@ function Register() {
 
           {/* Heading */}
           <p className="text-xs font-semibold tracking-[5px] text-amber-700 uppercase text-center mb-3">
-            Premium Account
+            Welcome Back
           </p>
 
           <h1 className="text-5xl font-bold text-center text-gray-900 mb-3">
-            Create Profile
+            Login Account
           </h1>
 
           <p className="text-center text-gray-600 mb-8">
-            Elegant golden liquid glass UI
+            Access your profile securely
           </p>
-
-          {/* Name */}
-          <div className="mb-4 relative">
-            <UserRound
-              size={18}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-700"
-            />
-
-            <input
-              type="text"
-              id="name"
-              placeholder="Full Name"
-              value={form.name}
-              onChange={handleChange}
-              className="w-full pl-11 pr-4 py-3 rounded-2xl bg-white/45 border border-orange-300 outline-none focus:ring-2 focus:ring-yellow-400 placeholder:text-gray-500"
-            />
-          </div>
-
-          {errors.name && (
-            <p className="text-red-500 text-sm mb-3">
-              {errors.name}
-            </p>
-          )}
 
           {/* Email */}
           <div className="mb-4 relative">
@@ -186,7 +152,7 @@ function Register() {
               placeholder="name@example.com"
               value={form.email}
               onChange={handleChange}
-              className="w-full pl-11 pr-4 py-3 rounded-2xl bg-white/45 border border-orange-300 outline-none focus:ring-2 focus:ring-yellow-400 placeholder:text-gray-500"
+              className="w-full pl-11 pr-4 py-3 rounded-2xl bg-white/45 border border-orange-300 outline-none focus:ring-2 focus:ring-yellow-400"
             />
           </div>
 
@@ -209,7 +175,7 @@ function Register() {
               placeholder="Password"
               value={form.password}
               onChange={handleChange}
-              className="w-full pl-11 pr-12 py-3 rounded-2xl bg-white/45 border border-orange-300 outline-none focus:ring-2 focus:ring-yellow-400 placeholder:text-gray-500"
+              className="w-full pl-11 pr-12 py-3 rounded-2xl bg-white/45 border border-orange-300 outline-none focus:ring-2 focus:ring-yellow-400"
             />
 
             <button
@@ -217,11 +183,7 @@ function Register() {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-amber-700 transition"
             >
-              {showPassword ? (
-                <EyeOff size={20} />
-              ) : (
-                <Eye size={20} />
-              )}
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           </div>
 
@@ -231,33 +193,29 @@ function Register() {
             </p>
           )}
 
-          {/* Rules */}
-          <div className="mb-5 rounded-2xl bg-white/25 border border-orange-200 px-4 py-4 text-sm text-gray-700 space-y-2">
-            <p className="font-semibold flex items-center gap-2">
-              <BadgeCheck size={16} className="text-amber-700" />
-              Password must contain:
-            </p>
-
-            <p>• One Capital Letter</p>
-            <p>• One Number</p>
-            <p>• One Symbol</p>
-            <p>• Minimum 8 Characters</p>
-          </div>
-
-          {/* Checkbox */}
-          <div className="flex items-center gap-3 mb-6">
+          {/* ✅ FIXED CHECKBOX */}
+          <div className="flex items-center gap-3 mb-4">
             <input
               type="checkbox"
               checked={agree}
-              onChange={() => setAgree(!agree)}
+              onChange={() => {
+                const newAgree = !agree;
+                setAgree(newAgree);
+                setErrors(validate(form, newAgree)); // 🔥 fix
+              }}
               className="accent-yellow-500 w-4 h-4"
             />
 
-            <label className="text-sm text-gray-700 flex items-center gap-2">
-             
+            <label className="text-sm text-gray-700">
               I agree to store my data
             </label>
           </div>
+
+          {errors.agree && (
+            <p className="text-red-500 text-sm mb-3">
+              {errors.agree}
+            </p>
+          )}
 
           {/* Submit */}
           <button
@@ -269,21 +227,24 @@ function Register() {
                 : "bg-gray-300 text-gray-500 cursor-not-allowed"
             }`}
           >
-            SUBMIT
+            LOGIN
           </button>
+
+          {/* Bottom Link */}
           <p className="text-center mt-6 text-sm">
-            Already a user?{" "}
+            New user?{" "}
             <Link
-              to="/"
-              className="text-blue-700 font-semibold hover:text-blue-900 transition"
+              to="/register"
+              className="text-blue-700 font-semibold"
             >
-              Login here
+              Create one
             </Link>
           </p>
+
         </div>
       </form>
     </div>
   );
 }
 
-export default Register;
+export default Login;

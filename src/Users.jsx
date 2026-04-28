@@ -135,7 +135,7 @@ function Users() {
                       <td className="p-4 text-center">
                         <button
                           onClick={() =>
-                            navigate(`/edit/${user._id}`)
+                            navigate(`/admin-edit/${user._id}`)
                           }
                           className="group p-2 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 hover:scale-110 transition-all duration-300 cursor-pointer"
                         >
